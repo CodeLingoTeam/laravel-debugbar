@@ -76,24 +76,7 @@ class MultiAuthCollector extends DataCollector implements Renderable
         return $data;
     }
 
-    private function resolveUser(Guard $guard)
-    {
-        // if we're logging in using remember token
-        // then we must resolve user „manually”
-        // to prevent csrf token regeneration
-
-        $recaller = $guard instanceof SessionGuard
-            ? $guard->getRequest()->cookies->get($guard->getRecallerName())
-            : null;
-
-        if (is_string($recaller) && Str::contains($recaller, '|')) {
-            $segments = explode('|', $recaller);
-            if (count($segments) == 2 && trim($segments[0]) !== '' && trim($segments[1]) !== '') {
-                return $guard->getProvider()->retrieveByToken($segments[0], $segments[1]);
-            }
-        }
-        return $guard->user();
-    }
+    
 
     /**
      * Get displayed user information
